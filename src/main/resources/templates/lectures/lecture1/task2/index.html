@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Task 1.2 | Spring Boot</title>
+    <th:block th:insert="~{service/libs/front-libs :: front-libs}">
+    </th:block>
+</head>
+<body>
+<header th:replace="~{lectures/lecture1/task2/fragments/header :: header}"></header>
+<main class="mb-3 min-vh-100">
+    <div class="container">
+        <div class="row mt-3 mb-2 text-center">
+            <h1 class="h1">Welcome to BITLAB SHOP</h1>
+            <p class="p">Electronic devices with high quality and service</p>
+        </div>
+        <div class="row mb-5">
+            <!--/*@thymesVar id="items" type="java.util.ArrayList<kz.xodbar.springprojects.lectures.lecture1.task1.models.Item>"*/-->
+            <!--/*@thymesVar id="item" type="kz.xodbar.springprojects.lectures.lecture1.task1.models.Item"*/-->
+            <div class="col-sm-4 mb-3" th:each="item : ${items}">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h4 class="h4 fw-normal pt-" th:text="${item.getName()}"></h4>
+                    </div>
+                    <div class="card-body text-center">
+                        <h4 class="h4 text-success mb-2 itemPrice" th:text="${item.getPrice()}"></h4>
+                        <p class="text-dark mb-2" th:utext="${item.getDescription()}"></p>
+                        <small class="small text-secondary w-100">
+                            Available amount: <span th:text="${item.getAmount()}" class="fw-bold"></span>
+                        </small>
+                        <button class="btn btn-success w-100 mb-2 mt-3">Buy Now</button>
+                        <a class="btn btn-outline-success w-100 mb-2"
+                           th:href="@{task2/{id}(id=${item.getId()})}">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:replace="~{service/footer :: footer}"></footer>
+</body>
+</html>

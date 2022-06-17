@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List All Items | Task 1.2</title>
+    <th:block th:insert="~{service/libs/front-libs :: front-libs}">
+    </th:block>
+
+    <style>
+        .itemPrice::before {
+            content: "$";
+        }
+    </style>
+</head>
+<body>
+<header th:replace="~{lectures/lecture1/task2/fragments/header :: header}"></header>
+<main class="mb-5 min-vh-100 container">
+    <div class="row mt-3 mb-2 text-center">
+        <h1 class="h1">List All Items</h1>
+        <p class="p">Here's the list of all items of the store</p>
+    </div>
+    <div class="row mb-2">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>NAME</th>
+                <th>DESCRIPTION</th>
+                <th>AMOUNT</th>
+                <th>PRICE</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <!--/*@thymesVar id="items" type="java.util.ArrayList<kz.xodbar.springprojects.lectures.lecture1.task2.models.Item>"*/-->
+            <tr th:each="item : ${items}" th:object="${item}">
+                <td th:text="*{id}" class="fw-bold"></td>
+                <td th:text="*{name}"></td>
+                <td th:utext="*{description.substring(0, 50)}"></td>
+                <td th:text="*{amount}"></td>
+                <td th:text="*{price}" class="itemPrice"></td>
+                <td>
+                    <a class="btn btn-sm btn-primary"
+                       th:href="@{{id}(id=${item.getId()})}">
+                        Details
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+<footer th:replace="~{service/footer :: footer}"></footer>
+</body>
+</html>

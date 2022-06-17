@@ -26,6 +26,11 @@ public class HomeController {
                 "Подключение к базе данных не обязательно. Данные вы можете хранить в списке - List, ArrayList.",
                 "https://lh6.googleusercontent.com/5AssJy27xYYaK1Q6V4TTPRfbiobnfcUf9pGmd_TTVGHpobWeWosokMsctkXQPKBJenaS4eijo5UtKEJbz1GRfuNGktg2X-DepmouwlxXoav8fg63YN91UXje7rhfEWEZmNIwk_pJemoFJxrUoQ",
                 "/", "/lecture1/task1"));
+        lectures.get(0).getTasks().add(new Task(2, "Продолжайте работать над заданием выше. " +
+                "Создайте отдельную ссылку для добавления этих товаров. У вас должна быть возможность добавлять их в " +
+                "список. А также просматривать их по отдельности, детальный просмотр.",
+                "https://lh6.googleusercontent.com/5AssJy27xYYaK1Q6V4TTPRfbiobnfcUf9pGmd_TTVGHpobWeWosokMsctkXQPKBJenaS4eijo5UtKEJbz1GRfuNGktg2X-DepmouwlxXoav8fg63YN91UXje7rhfEWEZmNIwk_pJemoFJxrUoQ",
+                "/", "/lecture1/task2"));
 
         lectures.add(new Lecture(
                 2, "Контроллеры Spring", new ArrayList<>()

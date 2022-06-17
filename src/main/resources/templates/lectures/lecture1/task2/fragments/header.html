@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Service Page</title>
+</head>
+<body>
+<header class="header bg-light" th:fragment="header">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a th:href="@{~/lecture1/task2}" class="navbar-brand">BITLAB SHOP</a>
+                <button class="navbar-toggler" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                        aria-controls="navbarContent">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a th:href="@{~/lecture1/task2}" class="nav-link active">Products</a>
+                        </li>
+                        <li class="nav-item">
+                            <a type="button" class="nav-link" data-bs-toggle="modal"
+                                    data-bs-target="#addItemModal">
+                                Add Item
+                            </a>
+                        </li>
+                        <li>
+                            <a th:href="@{task2/list}" class="nav-link">List Items</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="modal modal-xl fade" id="addItemModal" data-bs-backdrop="static"
+         data-bs-keyboard="false" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addItemModalLabel">Add New Item</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="#" th:action="@{/lecture1/task2/add}" method="post">
+                        <div class="input-group mb-3">
+                            <label for="name" class="form-label col-4">Name:</label>
+                            <input type="text" id="name" th:name="name" class="form-control col-8">
+                        </div>
+                        <div class="input-group mb-3">
+                            <label for="price" class="col-4">Price ($):</label>
+                            <input type="number" id="price" th:name="price" step="0.01"
+                                   min="1.00" max="9999.99" class="form-control col-8">
+                        </div>
+                        <div class="input-group mb-3">
+                            <label for="amount" class="form-label col-4">Amount:</label>
+                            <input type="number" id="amount" th:name="amount"
+                                   min="1" max="999" step="1" class="form-control col-8">
+                        </div>
+                        <div class="input-group mb-4">
+                            <label for="description" class="form-label col-12">Description:</label>
+                            <textarea id="description"
+                                      class="form-control col-12 tinytext" th:name="description"></textarea>
+                        </div>
+                        <div class="input-group mb-3">
+                            <button type="submit" class="btn btn-success w-100 text-center mb-2">Add</button>
+                            <button type="reset" class="btn btn-outline-secondary w-100">Reset</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+</body>
+</html>

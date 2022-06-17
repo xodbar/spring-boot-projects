@@ -6,7 +6,7 @@
     <th:block th:insert="~{service/libs/front-libs :: front-libs}">
     </th:block>
 </head>
-<body class="bg-light">
+<body class="bg-light min-vh-100">
 <header class="header bg-success">
     <nav class="navbar navbar-expand-lg navbar-dark bg-success">
         <div class="container-fluid">
@@ -32,7 +32,7 @@
         </div>
     </nav>
 </header>
-<main>
+<main class="mb-5 min-vh-100">
     <div class="container">
         <div class="row text-center mt-5 mb-4">
             <h1 class="h1">Welcome to Spring Boot Projects</h1>
@@ -70,7 +70,25 @@
                                 </h4>
                             </div>
                             <div class="card-body text-center">
-                                <p class="text-dark mb-3 justify-content-center" th:text="${task.getDescription()}"></p>
+                                <div class="text-dark mb-3 text-start">
+                                    <p>
+                                        <th:block th:text="${task.getDescription().substring(0, 100)}">
+                                        </th:block>
+                                        <span class="collapse" th:attr="id='readMore'+${lecture.getNumberOfLecture()}+${task.getNumberOfTask()}">
+                                            <th:block th:text="${task.getDescription().substring(100,
+                                             task.getDescription().length() - 1)}">
+                                            </th:block>
+                                        </span>
+                                        <span>
+                                            <a class="link link-success" data-bs-toggle="collapse"
+                                               th:attr="href='#readMore'+${lecture.getNumberOfLecture()}+${task.getNumberOfTask()},
+                                                        aria-controls='readMore'+${lecture.getNumberOfLecture()}+${task.getNumberOfTask()}"
+                                               role="button" aria-expanded="false">
+                                                    More/Less...
+                                            </a>
+                                        </span>
+                                    </p>
+                                </div>
                                 <a class="btn btn-success w-100 mb-2" th:href="${task.getUrl()}">GO</a>
                                 <a class="btn btn-outline-success w-100 mb-3" th:href="${task.getGithubUrl()}">
                                     View on GitHub
@@ -88,5 +106,6 @@
         </div>
     </div>
 </main>
+<footer th:replace="~{service/footer :: footer}"></footer>
 </body>
 </html>
