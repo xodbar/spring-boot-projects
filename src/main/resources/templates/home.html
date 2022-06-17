@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home | Spring Boot</title>
+    <th:block th:insert="~{service/libs/front-libs :: front-libs}">
+    </th:block>
+</head>
+<body class="bg-light">
+<header class="header bg-success">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+        <div class="container-fluid">
+            <a th:href="@{/}" class="navbar-brand">Spring Boot Projects</a>
+            <button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarItems"
+                    aria-controls="navbarItems">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarItems">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a th:href="@{/}" class="nav-link active">All Lectures</a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/}" class="nav-link">
+                            <i class="fa-brands fa-github text-light"></i> View on GitHub
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<main>
+    <div class="container">
+        <div class="row text-center mt-5 mb-4">
+            <h1 class="h1">Welcome to Spring Boot Projects</h1>
+            <h4 class="h4 fw-normal text-secondary">Use navigation below. Author: Zhandos Yessengaziev</h4>
+        </div>
+        <!--/*@thymesVar id="lectures" type="java.util.ArrayList<kz.xodbar.springprojects.home.models.Lecture>"*/-->
+        <!--/*@thymesVar id="lecture" type="kz.xodbar.springprojects.home.models.Lecture"*/-->
+        <div class="row mb-3 bg-success text-light rounded-1 justify-content-center pt-3 pb-1 px-2"
+             th:each="lecture : ${lectures}">
+            <div class="row">
+                <a class="h2 fw-light link-light text-decoration-none rounded d-flex
+                justify-content-between align-items-center mb-3"
+                   data-bs-toggle="collapse" th:attr="href='#lecture'+${lecture.getNumberOfLecture()}+'Tasks',
+                    aria-controls='lecture'+${lecture.getNumberOfLecture()}+'Tasks'"
+                   role="button" aria-expanded="false">
+                    Lecture #<th:block class="fw-bold" th:text="${lecture.getNumberOfLecture()}">
+                    </th:block>: <th:block th:text="${lecture.getNameOfLecture()}">
+                    </th:block>
+
+                    <span class="ms-3 fs-3">
+                        <i class="fa-solid fa-plus"></i>
+                    </span>
+                </a>
+            </div>
+            <div class="row collapse" th:attr="id='lecture'+${lecture.getNumberOfLecture()}+'Tasks'">
+                <th:block th:if="${lecture.getTasks().size() > 0}">
+                    <!--/*@thymesVar id="task" type="kz.xodbar.springprojects.home.models.Task"*/-->
+                    <div class="col-sm-4 pb-3" th:each="task : ${lecture.getTasks()}">
+                        <div class="card">
+                            <img src="https://miro.medium.com/max/1400/1*8ygFKYb0Yo6Hc-vnScGA9A.png"
+                                 class="card-img-top w-100" alt="task image" th:src="${task.getImageUrl()}">
+                            <div class="card-header text-center text-dark">
+                                <h4 class="h4 fw-normal pt-1 mt-1">
+                                    Practice Task <th:block th:text="${task.getNumberOfTask()}">DEF</th:block>
+                                </h4>
+                            </div>
+                            <div class="card-body text-center">
+                                <p class="text-dark mb-3 justify-content-center" th:text="${task.getDescription()}"></p>
+                                <a class="btn btn-success w-100 mb-2" th:href="${task.getUrl()}">GO</a>
+                                <a class="btn btn-outline-success w-100 mb-3" th:href="${task.getGithubUrl()}">
+                                    View on GitHub
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </th:block>
+                <th:block th:unless="${lecture.getTasks().size() > 0}">
+                    <div class="col pb-2">
+                        <h5 class="fw-normal text-center">Nothing to show yet...</h5>
+                    </div>
+                </th:block>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

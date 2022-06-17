@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Task 1.1 | Spring Boot</title>
+    <th:block th:insert="~{service/libs/front-libs :: front-libs}">
+    </th:block>
+
+    <style>
+        .itemPrice::before {
+            content: "$";
+        }
+    </style>
+</head>
+<body>
+<header class="header bg-light">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a th:href="@{~/lecture1/task1}" class="navbar-brand">BITLAB SHOP</a>
+                <button class="navbar-toggler" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                        aria-controls="navbarContent">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a th:href="@{~/lecture1/task1}" class="nav-link active">Products</a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{~/lecture1/task1}" class="nav-link">New Sales</a>
+                        </li>
+                        <li>
+                            <a th:href="@{~/lecture1/task1}" class="nav-link">By Category</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+<main>
+    <div class="container">
+        <div class="row mt-3 mb-2 text-center">
+            <h1 class="h1">Welcome to BITLAB SHOP</h1>
+            <p class="p">Electronic devices with high quality and service</p>
+        </div>
+        <div class="row mb-5">
+            <!--/*@thymesVar id="items" type="java.util.ArrayList<kz.xodbar.springprojects.lectures.lecture1.task1.models.Item>"*/-->
+            <!--/*@thymesVar id="item" type="kz.xodbar.springprojects.lectures.lecture1.task1.models.Item"*/-->
+            <div class="col-sm-4 mb-3" th:each="item : ${items}">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h4 class="h4 fw-normal pt-" th:text="${item.getName()}"></h4>
+                    </div>
+                    <div class="card-body text-center">
+                        <h4 class="h4 text-success mb-2 itemPrice" th:text="${item.getPrice()}"></h4>
+                        <p class="text-dark mb-3" th:text="${item.getDescription()}"></p>
+                        <button class="btn btn-success w-100 mb-2">Buy Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>
