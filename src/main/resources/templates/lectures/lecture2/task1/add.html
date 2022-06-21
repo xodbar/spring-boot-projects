@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Student | Spring Task 2.1</title>
+    <th:block th:insert="~{service/libs/front-libs :: front-libs}">
+    </th:block>
+</head>
+<body>
+<header th:replace="~{/lectures/lecture2/task1/fragments/header :: header}"></header>
+<main class="mb-5 min-vh-100">
+    <div class="container mt-3">
+        <form th:action="@{~/lecture2/task1/addStudent}" method="post">
+            <div class="input-group mb-3">
+                <label for="name" class="form-label col-4">Name:</label>
+                <input type="text" name="name" id="name" class="form-control col-8" required>
+            </div>
+            <div class="input-group mb-3">
+                <label for="surname" class="form-label col-4">Surname:</label>
+                <input type="text" name="surname" id="surname" class="form-control col-8" required>
+            </div>
+            <div class="input-group mb-5">
+                <label for="mark" class="form-label col-4">Mark:</label>
+                <input type="number" min="0" max="100" name="numEquivMark" id="mark" class="form-control col-8" required>
+            </div>
+            <div class="input-group mb-3">
+                <button class="btn btn-success w-100" type="submit">Add new student</button>
+            </div>
+        </form>
+    </div>
+</main>
+</body>
+</html>
