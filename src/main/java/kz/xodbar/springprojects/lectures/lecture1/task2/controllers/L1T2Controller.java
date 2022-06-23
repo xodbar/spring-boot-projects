@@ -2,6 +2,8 @@ package kz.xodbar.springprojects.lectures.lecture1.task2.controllers;
 
 import kz.xodbar.springprojects.lectures.lecture1.task2.db.DBManager;
 import kz.xodbar.springprojects.lectures.lecture1.task2.models.Item;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

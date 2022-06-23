@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{lectures/lecture3/task1/layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>All Tasks</title>
+</head>
+<body>
+    <div class="container mt-3" layout:fragment="content">
+        <button class="btn btn-outline-primary w-100 p-1 mb-2" th:text="#{button.addNewTaskButton}"
+                data-bs-toggle="modal" data-bs-target="#addTaskModal"></button>
+        <table class="table table-responsive-lg table-hover">
+            <thead class="bg-dark text-light">
+            <tr>
+                <th>ID</th>
+                <th th:text="#{th.taskName}"></th>
+                <th th:text="#{th.taskDeadlineDate}"></th>
+                <th th:text="#{th.taskStatus}"></th>
+                <th th:text="#{th.taskDetailsButton}"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <!--/*@thymesVar id="tasks" type="java.util.ArrayList<kz.xodbar.springprojects.lectures.lecture3.entities.Task>"*/-->
+            <tr th:each="task : ${tasks}">
+                <td th:text="${task.id}"></td>
+                <td th:text="${task.name}"></td>
+                <td th:text="${task.deadline}"></td>
+                <td th:text="(${task.isCompleted} ? #{text.taskIsCompleted} : #{text.taskIsNotCompleted})"
+                    th:class="(${task.isCompleted} ? 'text-success' : 'text-danger')"></td>
+                <td>
+                    <a class="btn btn-outline-primary" th:href="@{task1/{id}(id=${task.id})}"
+                       th:text="#{th.taskDetailsButton}"></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addTaskModalLabel" th:text="#{h5.addTaskModalTitle}"></h5>
+                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form th:action="@{task1/add}" method="post">
+                            <div class="input-group mb-3">
+                                <label for="name" class="form-label col-4"
+                                       th:text="#{label.addTaskModalTaskNameLabel}"></label>
+                                <input type="text" class="form-control col-8"
+                                       name="name" id="name" required>
+                            </div>
+                            <div class="input-group mb-3">
+                                <label for="deadline" class="form-label col-4"
+                                       th:text="#{label.addTaskModalDeadlineDateLabel}"></label>
+                                <input type="date" class="form-control col-8"
+                                       name="date" id="deadline" required>
+                            </div>
+                            <input type="hidden" name="isCompleted" value="false">
+                            <div class="input-group mb-3">
+                                <button class="btn btn-success w-100" th:text="#{button.addTaskModalAddTaskButton}">
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

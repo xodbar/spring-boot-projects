@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{lectures/lecture3/task1/layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Details | Spring Tasks 3.1</title>
+</head>
+<body>
+    <div class="container" layout:fragment="content">
+        <div class="row mt-3">
+            <!--/*@thymesVar id="task" type="kz.xodbar.springprojects.lectures.lecture3.entities.Task"*/-->
+            <form th:action="@{{id}(id=${task.id})}" method="post">
+                <input type="hidden" name="command" value="update">
+                <div class="input-group mb-3">
+                    <label for="name" class="form-label col-4"
+                           th:text="#{label.addTaskModalTaskNameLabel}"></label>
+                    <input type="text" class="form-control col-8" th:value="${task.name}"
+                           name="name" id="name" required>
+                </div>
+                <div class="input-group mb-3">
+                    <label for="deadline" class="form-label col-4"
+                           th:text="#{label.addTaskModalDeadlineDateLabel}"></label>
+                    <input type="date" class="form-control col-8" th:value="${task.deadline}"
+                           name="date" id="deadline" required>
+                </div>
+                <div class="input-group mb-4 mx-auto">
+                    <div class="col-5">
+                        <input type="radio" id="isNotChecked" name="isCompleted" value="false">
+                        <label for="isNotChecked" class="form-label" th:text="#{text.taskIsNotCompleted}"></label>
+                    </div>
+                    <div class="col-5">
+                        <input type="radio" id="isChecked" name="isCompleted" value="true"
+                               th:checked="${task.isCompleted}">
+                        <label for="isChecked" class="form-label" th:text="#{text.taskIsCompleted}"></label>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <button class="btn btn-success w-100" th:text="#{button.saveChanges}"></button>
+                </div>
+            </form>
+            <form th:action="@{{id}/del(id=${task.id})}" method="post">
+                <input type="hidden" name="command" value="delete">
+                <div class="input-group mb-3">
+                    <button class="btn btn-danger w-100">Delete Task</button>
+                </div>
+            </form>
+            <div class="row">
+                <a th:href="@{~/lecture3/task1}" class="btn btn-secondary w-100" th:text="#{a.backToList}"></a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
