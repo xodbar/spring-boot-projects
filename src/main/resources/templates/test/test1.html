@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{test/layout/test}">
+<head>
+    <title>Test 1.1: Beans</title>
+</head>
+<body>
+<section layout:fragment="testContent" class="mt-3 mb-2">
+    <!--/*@thymesVar id="text" type="java.lang.String"*/-->
+    <h1 class="display-5">
+        Test bean: <span th:text="${text}" class="fw-bold"></span>
+    </h1>
+</section>
+</body>
+</html>

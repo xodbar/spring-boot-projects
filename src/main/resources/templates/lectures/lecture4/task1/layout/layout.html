@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>SERVICE PAGE</title>
+
+    <th:block th:insert="~{service/libs/front-libs :: front-libs}">
+    </th:block>
+</head>
+<body>
+<header class="header bg-success w-100">
+<nav class="navbar navbar-expand-lg navbar-dark text-light">
+    <div class="container-fluid">
+        <a th:href="@{/lecture4/task1}" class="navbar-brand text-uppercase">
+            Requests CRM
+        </a>
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                aria-expanded="false" aria-controls="navbarContent" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a th:href="@{/lecture4/task1/}" class="nav-link">All Requests</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/lecture4/task1/unhandled}">
+                        Unhandled Requests
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/lecture4/task1/handled}">
+                        Handled Requests
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/lecture4/task1/add}">
+                        Add New Request
+                    </a>
+                </li>
+            </ul>
+            <div class="ms-auto">
+                <form th:action="@{/lecture4/task1/search}" method="get">
+                    <div class="input-group bg-white">
+                        <label for="search"></label>
+                        <input class="form-control border-end-0 border rounded-pill" type="text"
+                               placeholder="Search Request" id="search" name="query">
+                        <span class="input-group-append">
+                            <button class="btn btn-outline-secondary bg-white border-start-0 border rounded-pill ms-n3"
+                                    type="button">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</nav>
+</header>
+<main class="mt-3 mb-4 min-vh-100">
+    <div class="container" layout:fragment="content">
+        <h1>CONTENT GOES HERE</h1>
+    </div>
+</main>
+</body>
+</html>

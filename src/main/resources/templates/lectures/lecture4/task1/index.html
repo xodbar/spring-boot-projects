@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{lectures/lecture4/task1/layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Requests CRM</title>
+</head>
+<body>
+<div class="container" layout:fragment="content">
+    <div class="row">
+        <!--/*@thymesVar id="requests" type="java.util.List<kz.xodbar.springprojects.lectures.lecture4.entities.ApplicationRequest>"*/-->
+        <!--/*@thymesVar id="request" type="kz.xodbar.springprojects.lectures.lecture4.entities.ApplicationRequest"*/-->
+        <div class="col-sm-6" th:each="request : ${requests}">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <th:block th:if="${request.handled == false}">
+                            <span class="fw-bold text-uppercase text-danger">*(NEW) </span>
+                        </th:block>
+                        <th:block th:text="${'Request from ' + request.userName}">
+                        </th:block>
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-subtitle fw-normal">
+                        Course: <span class="text-success fw-bold" th:text="${request.course}"></span>
+                    </h4>
+                    <p class="card-text" th:text="${request.commentary}"></p>
+                    <h5 class="fw-normal">Phone: <span class="fw-bold" th:text="${request.phone}"></span></h5>
+                    <a th:href="@{/lecture4/task1/{id}(id=${request.id})}" class="btn btn-success w-100 mt-2 mt-3">
+                        Show Request Details
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
