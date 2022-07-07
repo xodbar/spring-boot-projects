@@ -1,6 +1,6 @@
-package kz.xodbar.springprojects.lectures.lecture4.repositories;
+package kz.xodbar.springprojects.lectures.lecture7.repositories;
 
-import kz.xodbar.springprojects.lectures.lecture4.entities.ApplicationRequest;
+import kz.xodbar.springprojects.lectures.lecture7.entities.ApplicationRequestUpdated;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,10 +12,10 @@ import java.util.List;
 
 @Repository
 @Transactional
-public interface ApplicationRequestRepository extends JpaRepository<ApplicationRequest, Long> {
-    List<ApplicationRequest> findAllByHandledTrue();
-    List<ApplicationRequest> findAllByHandledFalse();
-    List<ApplicationRequest> findAllByCommentaryIsLike(String query);
+public interface ApplicationRequestRepositoryUpdated extends JpaRepository<ApplicationRequestUpdated, Long> {
+    List<ApplicationRequestUpdated> findAllByHandledTrue();
+    List<ApplicationRequestUpdated> findAllByHandledFalse();
+    List<ApplicationRequestUpdated> findAllByCommentaryIsLike(String query);
     void deleteAllByHandledTrue();
 
     @Modifying

@@ -15,7 +15,6 @@ public class TestController {
 
     @RequestMapping(value = "/test1", method = RequestMethod.GET)
     public String getTest1(Model model) {
-
         return "./test/test1";
     }
 }

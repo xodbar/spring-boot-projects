@@ -1,20 +1,20 @@
-package kz.xodbar.springprojects.lectures.lecture4.services.impl;
+package kz.xodbar.springprojects.lectures.lecture7.services.impl;
 
-import kz.xodbar.springprojects.lectures.lecture4.entities.ApplicationRequest;
-import kz.xodbar.springprojects.lectures.lecture4.repositories.ApplicationRequestRepository;
-import kz.xodbar.springprojects.lectures.lecture4.services.ApplicationRequestService;
+import kz.xodbar.springprojects.lectures.lecture7.entities.ApplicationRequestUpdated;
+import kz.xodbar.springprojects.lectures.lecture7.repositories.ApplicationRequestRepositoryUpdated;
+import kz.xodbar.springprojects.lectures.lecture7.services.ApplicationRequestServiceUpdated;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class ApplicationRequestServiceImplementation implements ApplicationRequestService {
+public class ApplicationRequestServiceUpdatedImplementation implements ApplicationRequestServiceUpdated {
     @Autowired
-    private ApplicationRequestRepository repository;
+    private ApplicationRequestRepositoryUpdated repository;
 
     @Override
-    public void addRequest(ApplicationRequest request) {
+    public void addRequest(ApplicationRequestUpdated request) {
         try {
             repository.save(request);
         } catch (Exception e) {
@@ -23,7 +23,7 @@ public class ApplicationRequestServiceImplementation implements ApplicationReque
     }
 
     @Override
-    public ApplicationRequest getRequestById(Long id) {
+    public ApplicationRequestUpdated getRequestById(Long id) {
         try {
             return repository.getReferenceById(id);
         } catch (Exception e) {
@@ -33,7 +33,7 @@ public class ApplicationRequestServiceImplementation implements ApplicationReque
     }
 
     @Override
-    public List<ApplicationRequest> getAllRequests() {
+    public List<ApplicationRequestUpdated> getAllRequests() {
         try {
             return repository.findAll();
         } catch (Exception e) {
@@ -43,7 +43,7 @@ public class ApplicationRequestServiceImplementation implements ApplicationReque
     }
 
     @Override
-    public void updateRequest(ApplicationRequest request) {
+    public void updateRequest(ApplicationRequestUpdated request) {
         try {
             repository.save(request);
         } catch (Exception e) {
@@ -70,7 +70,7 @@ public class ApplicationRequestServiceImplementation implements ApplicationReque
     }
 
     @Override
-    public List<ApplicationRequest> getUnhandledRequests() {
+    public List<ApplicationRequestUpdated> getUnhandledRequests() {
         try {
             return repository.findAllByHandledFalse();
         } catch (Exception e) {
@@ -80,7 +80,7 @@ public class ApplicationRequestServiceImplementation implements ApplicationReque
     }
 
     @Override
-    public List<ApplicationRequest> searchRequestByComment(String query) {
+    public List<ApplicationRequestUpdated> searchRequestByComment(String query) {
         try {
             return repository.findAllByCommentaryIsLike(query);
         } catch (Exception e) {
@@ -90,7 +90,7 @@ public class ApplicationRequestServiceImplementation implements ApplicationReque
     }
 
     @Override
-    public List<ApplicationRequest> getHandledRequests() {
+    public List<ApplicationRequestUpdated> getHandledRequests() {
         try {
             return repository.findAllByHandledTrue();
         } catch (Exception e) {

@@ -33,7 +33,27 @@ public class HomeController {
                 "/", "/lecture1/task2"));
 
         lectures.add(new Lecture(
-                2, "Контроллеры Spring", new ArrayList<>()
+                3, "Thymeleaf", new ArrayList<>()
+        ));
+        lectures.get(1).getTasks().add(new Task(
+                1, "Создайте ВЕБ приложение на Spring Boot используя библиотеку \"Thymeleaf\" в " +
+                "качестве представления (view). Нужно будет разработать мини систему результатов экзамена студентов.  " +
+                "Мне нужно будет хранить список студентов.",
+                "https://lh5.googleusercontent.com/Xcf2YVFG3GLa1kkLj20vtQPvm73l-8LOrxZSziIqXcdIZWbuLFZyUp3j_AAo6McqoENsH8i3isVdBLAcWwzfKHZIfVWC9AjXkyR7G_1cmdjjOP3UtE6CIQpZueCHlXOkdWatA5eWz0V7ai-0Hw",
+                "/", "/lecture3/task1"
+        ));
+
+        lectures.add(new Lecture(
+                4, "Thymeleaf Layout Dialect", new ArrayList<>()
+        ));
+
+        lectures.get(2).getTasks().add(new Task(
+                1, "Создайте ВЕБ приложение на Spring Boot используя библиотеку \"Thymeleaf\" " +
+                "в качестве представления (view). Создайте основной макет (Layout) вашей страницы, используя библиотеку" +
+                " \"Thymeleaf Layout Dialect\". Тема проекта заключается в менеджере задач. Для начала вам нужно будет " +
+                "создать класс Task.java, с параметрами: Task.java",
+                "https://lh6.googleusercontent.com/O6iKMlkdN3Axw1cdeDiw9_tsxkr4n_Ih7wQzAna3ZzBPUhy67drptcSqmFIS1X2HGzyTIhdhYZyhdw4vS5FcXF78yGB0KivIVT8j1q9EvpknAgBp-5iybTWqL7drAmP_YhvEVi28CjuCOmnlGg",
+                "/", "lecture4/task1"
         ));
 
         return lectures;

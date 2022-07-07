@@ -1,11 +1,9 @@
 package kz.xodbar.springprojects.lectures.lecture4.services;
 
 import kz.xodbar.springprojects.lectures.lecture4.entities.ApplicationRequest;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public interface ApplicationRequestService {
     void addRequest(ApplicationRequest request);
     ApplicationRequest getRequestById(Long id);
