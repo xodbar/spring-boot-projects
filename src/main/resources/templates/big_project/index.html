@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{big_project/layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Trello - Manage your tasks & projects!</title>
+</head>
+<body>
+<main layout:fragment="content">
+<div class="container">
+    <div class="row mb-2">
+        <button class="btn btn-primary w-100" type="button"
+                data-bs-toggle="modal" data-bs-target="#addNewFolderModal"></button>
+    </div>
+
+    <!--/*@thymesVar id="folders" type="java.util.List<kz.xodbar.springprojects.big_project.entities.Folder>"*/-->
+    <div class="card mb-3" th:each="folder : ${folders}">
+        <div class="card-body">
+            <h3 class="card-title" th:text="${folder.getFolderName()}"></h3>
+            <h5 class="fw-normal text-secondary mb-3">
+                Folder ID: <span class="fw-bold" th:text="${folder.getFolderId()}"></span>
+            </h5>
+            <a th:href="@{/trello/folders/{folderId}(folderId=${folder.getFolderId()})}" class="btn btn-primary">
+                View Folder
+            </a>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addFolderModal" tabindex="-1"
+         data-bs-backdrop="static" data-bs-keyboard="false"
+         aria-labelledby="addFolderModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addFolderModalLabel">Add New Folder</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/trello/folders}" method="post">
+                        <div class="input-group mb-3">
+                            <label for="folderName" class="form-label col-4">Folder name:</label>
+                            <input type="text" id="folderName" name="folderName" class="form-control col-8" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <button class="btn btn-primary px-2 mb-2" type="submit">Add</button>
+                            <button class="btn btn-outline-secondary" type="reset">Reset</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</main>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{big_project/layout/layout}">
+<!--/*@thymesVar id="task" type="kz.xodbar.springprojects.big_project.entities.Task"*/-->
+<head>
+    <meta charset="UTF-8">
+    <title th:title="${task.getTaskTitle()} + ' | trello.com'"></title>
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="container">
+        <form th:action="@{/trello/folders/{folderId}/{taskId}/update
+                           (folderId=${task.getTaskFolder().getFolderId()}, taskId=${task.getTaskId()})}" method="post">
+            <div class="input-group mb-3">
+                <label for="title" class="form-label col-4">Task Title:</label>
+                <input type="text" id="title" name="title" class="form-control col-8" th:value="${task.getTaskTitle()}">
+            </div>
+            <div class="input-group mb-3">
+                <label for="status" class="form-label col-4">Task Status:</label>
+                <select name="status" id="status" class="form-control col-8">
+                    <option value="1" th:selected="${task.getTaskStatus() == 0}">TO DO</option>
+                    <option value="2" th:selected="${task.getTaskStatus() == 1}">IN TEST</option>
+                    <option value="3" th:selected="${task.getTaskStatus() == 2}">DONE</option>
+                    <option value="4" th:selected="${task.getTaskStatus() == 3}">FAILED</option>
+                </select>
+            </div>
+            <div class="input-group mb-3">
+                <label for="description" class="form-label col-4">Task Description:</label>
+                <textarea name="description" id="description" class="textarea form-control col-8"
+                          th:text="${task.getTaskDescription()}"></textarea>
+            </div>
+            <div class="input-group mb-5">
+                <button type="submit" class="btn btn-primary w-100 text-center mb-2">Save Changes</button>
+                <button type="reset" class="btn btn-outline-secondary w-100 text-center">Reset</button>
+            </div>
+        </form>
+        <form th:action="@{/trello/folders/{folderId}/{taskId}/delete
+                           (folderId=${task.getTaskFolder().getFolderId()}, taskId=${task.getTaskId()})}" method="post">
+            <div class="input-group mb-3">
+                <button type="submit" class="btn btn-outline-danger w-100 text-center">Delete Task</button>
+            </div>
+        </form>
+    </div>
+</main>
+</body>
+</html>
