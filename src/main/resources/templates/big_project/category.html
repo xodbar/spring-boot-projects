@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{big_project/layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Categories | trello.com</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <div class="container mt-2">
+        <div class="border-primary border-1 p-2 mt-2 mb-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/trello}">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Categories</li>
+                </ol>
+            </nav>
+        </div>
+
+        <th:block th:if="${#httpServletRequest.getParameter('cid') != null
+                                   && !(#httpServletRequest.getParameter('cid').isEmpty())}">
+            <div class="mb-4">
+                <h4 class="mb-2">
+                    Folders with category ID <span class="text-success" th:text="${#httpServletRequest.getParameter('cid')}"></span>:
+                </h4>
+                <!--/*@thymesVar id="categoryFolders" type="java.util.List<kz.xodbar.springprojects.big_project.entities.Folder>"*/-->
+                <th:block th:if="${categoryFolders != null && categoryFolders.size() > 0}">
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center"
+                            th:each="folder : ${categoryFolders}">
+                            <div class="ms-2 me-auto">
+                                <h5>
+                                    <a th:href="@{/trello/folders/{folderId}(folderId=${folder.getFolderId()})}"
+                                       th:text="${folder.getFolderName()}"
+                                       class="link-primary text-decoration-none"></a>
+                                </h5>
+                            </div>
+                            <a th:href="@{/trello/folders/{folderId}(folderId=${folder.getFolderId()})}"
+                               class="btn btn-primary">Go</a>
+                        </li>
+                    </ul>
+                </th:block>
+                <th:block th:unless="${categoryFolders != null && categoryFolders.size() > 0}">
+                    <p>No folders were found...</p>
+                </th:block>
+            </div>
+        </th:block>
+
+        <div>
+            <h4 class="d-inline me-3">All categories:</h4>
+            <!--/*@thymesVar id="categories" type="java.util.List<kz.xodbar.springprojects.big_project.entities.TaskCategory>"*/-->
+            <a th:each="category : ${categories}" class="btn btn-sm btn-success me-2"
+               th:href="@{'/trello/categories' + '?cid=' + ${category.getTaskCategoryId()}}">
+                <i class="fa-solid fa-tag"></i>
+                <th:block th:text="' ' + ${category.getTaskCategoryName()}">
+                </th:block>
+            </a>
+        </div>
+    </div>
+</main>
+</body>
+</html>

@@ -10,6 +10,22 @@
 <body>
 <main layout:fragment="content">
     <div class="container">
+        <div class="border-primary border-1 p-2 mt-2 mb-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/trello}">Home</a></li>
+                    <li class="breadcrumb-item"><a th:href="@{/trello/folders}">Folders</a></li>
+                    <li class="breadcrumb-item" aria-current="page">
+                        <a th:href="@{/trello/folders/{folderId}(folderId=${task.getTaskFolder().getFolderId()})}"
+                           th:text="${task.getTaskFolder().getFolderName()}"></a>
+                    </li>
+                    <li class="breadcrumb-item active"
+                        aria-current="page" th:text="${task.getTaskTitle()}"></li>
+                </ol>
+            </nav>
+        </div>
+
+        <h2 th:text="'Task: ' + ${task.getTaskTitle()}" class="mb-3"></h2>
         <form th:action="@{/trello/folders/{folderId}/{taskId}/update
                            (folderId=${task.getTaskFolder().getFolderId()}, taskId=${task.getTaskId()})}" method="post">
             <div class="input-group mb-3">
@@ -19,28 +35,68 @@
             <div class="input-group mb-3">
                 <label for="status" class="form-label col-4">Task Status:</label>
                 <select name="status" id="status" class="form-control col-8">
-                    <option value="1" th:selected="${task.getTaskStatus() == 0}">TO DO</option>
-                    <option value="2" th:selected="${task.getTaskStatus() == 1}">IN TEST</option>
-                    <option value="3" th:selected="${task.getTaskStatus() == 2}">DONE</option>
-                    <option value="4" th:selected="${task.getTaskStatus() == 3}">FAILED</option>
+                    <option value="0" th:selected="${task.getTaskStatus() == 0}">TO DO</option>
+                    <option value="1" th:selected="${task.getTaskStatus() == 1}">IN TEST</option>
+                    <option value="2" th:selected="${task.getTaskStatus() == 2}">DONE</option>
+                    <option value="3" th:selected="${task.getTaskStatus() == 3}">FAILED</option>
                 </select>
             </div>
             <div class="input-group mb-3">
                 <label for="description" class="form-label col-4">Task Description:</label>
-                <textarea name="description" id="description" class="textarea form-control col-8"
+                <textarea name="description" id="description" class="tinytext form-control col-8"
                           th:text="${task.getTaskDescription()}"></textarea>
             </div>
-            <div class="input-group mb-5">
-                <button type="submit" class="btn btn-primary w-100 text-center mb-2">Save Changes</button>
-                <button type="reset" class="btn btn-outline-secondary w-100 text-center">Reset</button>
+            <div class="mb-4 d-flex justify-content-between">
+                <button type="reset" class="btn fw-bold btn-outline-secondary col-5 text-center">Reset</button>
+                <button type="submit" class="btn fw-bold btn-primary col-5 text-center mb-2">Save Changes</button>
             </div>
         </form>
         <form th:action="@{/trello/folders/{folderId}/{taskId}/delete
                            (folderId=${task.getTaskFolder().getFolderId()}, taskId=${task.getTaskId()})}" method="post">
             <div class="input-group mb-3">
-                <button type="submit" class="btn btn-outline-danger w-100 text-center">Delete Task</button>
+                <button type="submit" class="btn btn-outline-danger fw-bold w-100 text-center">Delete Task</button>
             </div>
         </form>
+
+        <hr class="border-5 border-primary mt-3 mb-3">
+
+        <div class="mt-3 mb-4">
+            <h4 class="mb-2">Comments for task:</h4>
+            <!--/*@thymesVar id="comments" type="java.util.List<kz.xodbar.springprojects.big_project.entities.Comment>"*/-->
+            <div class="border-primary border-2 mb-5">
+                <form th:action="@{/trello/folders/{folderId}/{taskId}/addComment(folderId=${task.getTaskFolder().getFolderId()}, taskId=${task.getTaskId()})}"
+                      method="post">
+                    <div class="input-group mb-2">
+                        <label for="content" class="form-label col-12">Add new comment:</label>
+                        <textarea name="content" id="content" class="tinytext form-control col-12" rows="2"></textarea>
+                    </div>
+                    <div class="mb-2">
+                        <button class="btn btn-primary w-100">Add Comment</button>
+                    </div>
+                </form>
+            </div>
+            <div class="p-3 mt-5 mb-5 rounded-2" style="background-color: #f5f5f5" th:each="comment : ${comments}">
+                <form th:action="@{/trello/folders/{folderId}/{taskId}/updateComment(folderId=${task.getTaskFolder().getFolderId()}, taskId=${task.getTaskId()})}"
+                      method="post">
+                    <input type="hidden" name="commentId" th:value="${comment.getCommentId()}">
+                    <div class="input-group mb-2">
+                        <label for="newContent"></label>
+                        <textarea name="newContent" id="newContent" th:text="${comment.getCommentContent()}"
+                                  class="tinytext form-control col-12" rows="2"></textarea>
+                    </div>
+                    <div class="input-group mb-2">
+                        <button class="btn btn-sm btn-primary w-100" type="submit">Update Comment</button>
+                    </div>
+                </form>
+                <form th:action="@{/trello/folders/{folderId}/{taskId}/deleteComment(folderId=${task.getTaskFolder().getFolderId()}, taskId=${task.getTaskId()})}"
+                      method="post">
+                    <input type="hidden" name="commentId" th:value="${comment.getCommentId()}">
+                    <div class="input-group">
+                        <button class="btn btn-sm btn-outline-danger w-100" type="submit">Delete</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </main>
 </body>

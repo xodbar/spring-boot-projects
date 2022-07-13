@@ -12,5 +12,5 @@ public interface CommentService {
     void updateComment(Long commentId, String newContent);
     void deleteComment(Comment comment);
 
-    List<Comment> getCommentsForTask(Long taskId);
+    List<Comment> getCommentsForTask(Task task);
 }

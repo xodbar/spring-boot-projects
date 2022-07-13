@@ -23,7 +23,12 @@ public class FolderServiceImplementation implements FolderService {
         try {
             Folder temp = getFolderById(folderId);
 
-            if (!temp.getFolderCategories().contains(taskCategoryService.getCategoryById(categoryId)))
+            boolean folderContainsSuchCategory = false;
+            for (TaskCategory category : temp.getFolderCategories())
+                if (category.equals(taskCategoryService.getCategoryById(categoryId)))
+                    folderContainsSuchCategory = true;
+
+            if (!folderContainsSuchCategory)
                 throw new Exception("No such category in this folder!");
 
             temp.getFolderCategories().remove(taskCategoryService.getCategoryById(categoryId));
@@ -42,9 +47,10 @@ public class FolderServiceImplementation implements FolderService {
             if (categoryName == null || categoryName.isEmpty())
                 throw new Exception("Invalid category name");
 
-            for (TaskCategory category : taskCategoryService.getAllCategories())
-                if (getFolderById(folderId).getFolderCategories().contains(category))
-                    throw new Exception("Folder already have this category!");
+            if (folderRepository.getReferenceById(folderId).getFolderCategories()
+                    .contains(taskCategoryService.getCategoryByName(categoryName)))
+                throw new Exception("Folder already has this category!");
+
 
             Folder temp = getFolderById(folderId);
 
@@ -112,9 +118,9 @@ public class FolderServiceImplementation implements FolderService {
     }
 
     @Override
-    public List<Folder> getFoldersByCategory(Long categoryId) {
+    public List<Folder> getFoldersByCategory(TaskCategory category) {
         try {
-            return folderRepository.findFoldersByFolderCategories(categoryId);
+            return folderRepository.findFoldersByFolderCategories(category);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -124,7 +130,7 @@ public class FolderServiceImplementation implements FolderService {
     @Override
     public List<Folder> getFoldersByNameSearch(String folderName) {
         try {
-            return folderRepository.findAllByFolderName(folderName);
+            return folderRepository.findAllByFolderNameLikeIgnoreCase("%" + folderName + "%");
         } catch (Exception e) {
             e.printStackTrace();
             return null;

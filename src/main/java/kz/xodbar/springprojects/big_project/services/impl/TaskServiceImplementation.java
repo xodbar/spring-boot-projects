@@ -2,6 +2,7 @@ package kz.xodbar.springprojects.big_project.services.impl;
 
 import kz.xodbar.springprojects.big_project.entities.Task;
 import kz.xodbar.springprojects.big_project.repositories.TaskRepository;
+import kz.xodbar.springprojects.big_project.services.FolderService;
 import kz.xodbar.springprojects.big_project.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,9 @@ import java.util.List;
 public class TaskServiceImplementation implements TaskService {
     @Autowired
     private TaskRepository taskRepository;
+
+    @Autowired
+    private FolderService folderService;
 
     @Override
     public Task addNewTask(Task task) {
@@ -65,7 +69,7 @@ public class TaskServiceImplementation implements TaskService {
     @Override
     public List<Task> getTasksByFolder(Long folderId) {
         try {
-            return taskRepository.findAllByTaskFolder(folderId);
+            return taskRepository.findAllByTaskFolder(folderService.getFolderById(folderId));
         } catch (Exception e) {
             e.printStackTrace();
             return null;

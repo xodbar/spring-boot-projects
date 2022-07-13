@@ -10,35 +10,49 @@
 <body>
 <main layout:fragment="content">
     <div class="container">
+        <div class="border-primary border-1 p-2 mt-2 mb-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/trello}">Home</a></li>
+                    <li class="breadcrumb-item"><a th:href="@{/trello/folders}">Folders</a></li>
+                    <li class="breadcrumb-item active" aria-current="page" th:text="${folder.getFolderName()}"></li>
+                </ol>
+            </nav>
+        </div>
+
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title" th:text="${folder.getFolderName()}"></h3>
             </div>
             <div class="card-body">
-                <h5 class="fw-normal d-inline">Folder categories:</h5>
-                <div th:each="category : ${folder.getFolderCategories()}" class="d-inline me-1">
+                <h5 class="fw-normal d-inline me-2">Folder categories:</h5>
+                <div th:each="category : ${folder.getFolderCategories()}"
+                     class="d-inline-flex align-items-center me-1 px-2 py-1 bg-success rounded-1">
                     <a th:href="@{/trello/categories/{categoryId}(categoryId=${category.getTaskCategoryId()})}"
-                       th:text="${category.getTaskCategoryName()}" class="pe-1 me-auto"></a>
+                       th:text="${category.getTaskCategoryName()}" class="link-light text-decoration-none me-2"></a>
                     <form th:action="@{/trello/folders/{folderId}/removeCategory(folderId=${folder.getFolderId()})}"
+                          method="post"
                           class="ms-auto">
                         <input type="hidden" name="categoryId" th:value="${category.getTaskCategoryId()}">
-                        <button type="submit" class="btn-close"></button>
+                        <button type="submit" class="bg-transparent border-0">
+                            <i class="fa-solid fa-xmark link-light"></i>
+                        </button>
                     </form>
                 </div>
                 <span class="ms-2">
-                    <button class="text-decoration-none bg-transparent text-dark" type="button"
-                            data-bs-toggle="modal" data-bs-target="#assignCategoryModal">
-                        Assign category
+                    <button class="text-decoration-none text-secondary bg-transparent fw-bold border-0"
+                            type="button" data-bs-toggle="modal" data-bs-target="#assignCategoryModal">
+                        <i class="fa-solid fa-plus"></i> Assign category
                     </button>
                 </span>
             </div>
         </div>
 
-        <div class="row">
+        <div class="row mt-4">
             <button type="button" data-bs-toggle="modal" data-bs-target="#addTaskModal"
-                    class="btn btn-outline-primary w-100 text-center mb-3">Add Task</button>
+                    class="btn btn-primary w-100 text-center mb-3 fw-bold">Add Task</button>
             <table class="table table-responsive table-striped table-hover">
-                <thead>
+                <thead class="bg-primary text-light">
                 <tr>
                     <th>ID</th>
                     <th>Task Name</th>
@@ -47,26 +61,34 @@
                 </tr>
                 </thead>
                 <tbody>
-                <!--/*@thymesVar id="tasks" type="java.util.List<kz.xodbar.springprojects.big_project.entities.Task>"*/-->
-                <tr th:each="task : ${tasks}">
-                    <td th:text="${task.getTaskId()}"></td>
-                    <td th:text="${task.getTaskTitle()}"></td>
-                    <td th:text="${task.getTaskStatus()}"></td>
-                    <td class="fw-bold text-center text-uppercase">
-                        <th:block th:switch="${task.getTaskStatus()}">
-                            <span th:case="0" class="text-warning">to do</span>
-                            <span th:case="1" class="text-primary">in test</span>
-                            <span th:case="2" class="text-success">done</span>
-                            <span th:case="3" class="text-danger">failed</span>
-                        </th:block>
-                    </td>
-                    <td>
-                        <a th:href="@{/trello/folders/{folderId}/{taskId}(folderId=${folder.getFolderId()}, taskId=${task.getTaskId()})}"
-                           class="btn-sm btn-primary">
-                            View More
-                        </a>
-                    </td>
-                </tr>
+                <!--/*@thymesVar id="folderTasks" type="java.util.List<kz.xodbar.springprojects.big_project.entities.Task>"*/-->
+                <th:block th:if="${folderTasks != null && folderTasks.size() > 0}">
+                    <tr th:each="task : ${folderTasks}">
+                        <td th:text="${task.getTaskId()}"></td>
+                        <td th:text="${task.getTaskTitle()}"></td>
+                        <td class="fw-bold text-center text-uppercase">
+                            <th:block th:switch="${task.getTaskStatus()}">
+                                <span th:case="0" class="text-warning">to do</span>
+                                <span th:case="1" class="text-primary">in test</span>
+                                <span th:case="2" class="text-success">done</span>
+                                <span th:case="3" class="text-danger">failed</span>
+                            </th:block>
+                        </td>
+                        <td class="text-center">
+                            <a th:href="@{/trello/folders/{folderId}/{taskId}(folderId=${folder.getFolderId()}, taskId=${task.getTaskId()})}"
+                               class="btn btn-sm btn-primary">
+                                View More
+                            </a>
+                        </td>
+                    </tr>
+                </th:block>
+                <th:block th:if="${folderTasks == null || folderTasks.size() <= 0}">
+                    <tr>
+                        <td colspan="4">
+                            <h6 class="text-center">No tasks have been added to the folder. Try adding a new one :)</h6>
+                        </td>
+                    </tr>
+                </th:block>
                 </tbody>
             </table>
         </div>
@@ -81,31 +103,37 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form th:action="@{/trello/folders/{folderId}/assignCategory(folderId=${folder.getFolderId()})}">
+                        <form th:action="@{/trello/folders/{folderId}/assignCategory(folderId=${folder.getFolderId()})}"
+                              method="post">
                             <div class="input-group mb-3">
                                 <label for="categoryName" class="form-label col-4">Category:</label>
-                                <input list="categories" value="" class="col-8 form-control" name="categoryName"
+                                <input list="categories" class="form-control col-8" name="categoryName"
                                        id="categoryName" required>
                                 <datalist id="categories">
                                     <!--/*@thymesVar id="allCategories" type="java.util.List<kz.xodbar.springprojects.big_project.entities.TaskCategory>"*/-->
-                                    <option th:each="category : ${allCategories}"
-                                            th:value="${category.getTaskCategoryName()}"
-                                            th:text="${category.getTaskCategoryName()}
-                                                                    + (folder.getFolderCategories().contains(category)
-                                                                                                  ? ' (Assigned)' : '')"
-                                            th:disabled="${folder.getFolderCategories().contains(category)}"></option>
+                                    <option th:each="categoryX : ${allCategories}"
+                                            th:value="${categoryX.getTaskCategoryName()}"
+                                            th:text="${categoryX.getTaskCategoryName()}
+                                                                    + ${(folder.getFolderCategories().contains(categoryX)
+                                                                                                  ? ' (Assigned)' : '')}"
+                                            th:disabled="${folder.getFolderCategories().contains(categoryX)}"></option>
                                 </datalist>
                             </div>
-                            <div class="input-group mb-3">
+                            <div class="input-group mb-1">
                                 <button type="submit" class="btn btn-primary w-100 text-center">Add category</button>
                             </div>
                         </form>
+                    </div>
+                    <div class="modal-footer">
+                        <small class="text-secondary">
+                            Tip: Didn't find necessary category? Just type it and program will create a new one!
+                        </small>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="modal fade" id="addTaskModal" tabindex="-1"
+        <div class="modal modal-xl fade" id="addTaskModal" tabindex="-1"
              data-bs-backdrop="static" data-bs-keyboard="false"
              aria-labelledby="addTaskModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -115,7 +143,8 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form th:action="@{/trello/folders/{folderId}/addTask}" method="post">
+                        <form th:action="@{/trello/folders/{folderId}/addTask(folderId=${folder.getFolderId()})}"
+                              method="post">
                             <input type="hidden" name="status" value="0">
                             <div class="input-group mb-3">
                                 <label for="title" class="form-label col-4">Title:</label>
@@ -125,7 +154,7 @@
                             <div class="input-group mb-3">
                                 <label for="description" class="form-label col-12">Description:</label>
                                 <textarea name="description" id="description" rows="15"
-                                          class="textarea form-control col-12"></textarea>
+                                          class="tinytext form-control col-12"></textarea>
                             </div>
                             <div class="input-group mb-3">
                                 <button type="submit" class="btn btn-primary w-100 text-center mb-2">

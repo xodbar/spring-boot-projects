@@ -9,31 +9,65 @@
 <body>
 <main layout:fragment="content">
 <div class="container">
-    <div class="row mb-2">
-        <button class="btn btn-primary w-100" type="button"
-                data-bs-toggle="modal" data-bs-target="#addNewFolderModal"></button>
+    <div class="border-primary border-1 p-2 mt-2 mb-3">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/trello}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Folders</li>
+            </ol>
+        </nav>
     </div>
 
-    <!--/*@thymesVar id="folders" type="java.util.List<kz.xodbar.springprojects.big_project.entities.Folder>"*/-->
-    <div class="card mb-3" th:each="folder : ${folders}">
-        <div class="card-body">
-            <h3 class="card-title" th:text="${folder.getFolderName()}"></h3>
-            <h5 class="fw-normal text-secondary mb-3">
-                Folder ID: <span class="fw-bold" th:text="${folder.getFolderId()}"></span>
-            </h5>
-            <a th:href="@{/trello/folders/{folderId}(folderId=${folder.getFolderId()})}" class="btn btn-primary">
-                View Folder
-            </a>
+    <button class="btn btn-primary w-100 mb-3" type="button"
+            data-bs-toggle="modal" data-bs-target="#addNewFolderModal">Add New Folder</button>
+
+    <th:block th:if="${#httpServletRequest.getParameter('query') != null
+                            && !(#httpServletRequest.getParameter('query').isEmpty())}">
+        <div class="row">
+            <p class="text-secondary">Results for query <span class="text-dark" th:text="${param.query}"></span>:</p>
         </div>
-    </div>
+    </th:block>
+    <!--/*@thymesVar id="folders" type="java.util.List<kz.xodbar.springprojects.big_project.entities.Folder>"*/-->
+    <th:block th:if="${folders != null && folders.size() > 0}">
+        <div class="card mb-3" th:each="folder : ${folders}">
+            <div class="card-body">
+                <h3 class="card-title" th:text="${folder.getFolderName()}"></h3>
+                <h5 class="fw-normal text-secondary mb-3">
+                    Folder ID: <span class="fw-bold" th:text="${folder.getFolderId()}"></span>
+                </h5>
+                <a th:href="@{/trello/folders/{folderId}(folderId=${folder.getFolderId()})}" class="btn btn-primary">
+                    View Folder
+                </a>
+            </div>
+            <div class="card-footer">
+                <th:block th:if="${folder.getFolderCategories() == null || folder.getFolderCategories().size() <= 0}">
+                    <span>Folder has no tags. Click on "View Folder" to add the tag(s)</span>
+                </th:block>
+                <th:block th:unless="${folder.getFolderCategories() == null || folder.getFolderCategories().size() <= 0}">
+                    <a th:each="folderCategory : ${folder.getFolderCategories()}"
+                       th:href="@{'/trello/categories' + '?cid=' + ${folderCategory.getTaskCategoryId()}}"
+                       class="btn btn-sm btn-success fw-bold me-2">
+                        <i class="fa-solid fa-tag"></i>
+                        <th:block th:text="${folderCategory.getTaskCategoryName()}">
+                        </th:block>
+                    </a>
+                </th:block>
+            </div>
+        </div>
+    </th:block>
+    <th:block th:unless="${folders != null && folders.size() > 0}">
+        <div class="row mb-3">
+            <h4>No folders were found...</h4>
+        </div>
+    </th:block>
 
-    <div class="modal fade" id="addFolderModal" tabindex="-1"
-         data-bs-backdrop="static" data-bs-keyboard="false"
-         aria-labelledby="addFolderModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addNewFolderModal" tabindex="-1"
+         data-bs-keyboard="false" data-bs-backdrop="static"
+         aria-labelledby="addNewFolderModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addFolderModalLabel">Add New Folder</h5>
+                    <h5 class="modal-title" id="addNewFolderModalLabel">Add New Folder</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -43,8 +77,10 @@
                             <input type="text" id="folderName" name="folderName" class="form-control col-8" required>
                         </div>
                         <div class="input-group mb-3">
-                            <button class="btn btn-primary px-2 mb-2" type="submit">Add</button>
-                            <button class="btn btn-outline-secondary" type="reset">Reset</button>
+                            <button class="btn btn-primary w-100 text-center" type="submit">Add</button>
+                        </div>
+                        <div class="input-group mb-3">
+                            <button class="btn btn-outline-secondary w-100 text-center" type="reset">Reset</button>
                         </div>
                     </form>
                 </div>

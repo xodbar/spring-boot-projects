@@ -1,6 +1,7 @@
 package kz.xodbar.springprojects.big_project.controllers;
 
 import kz.xodbar.springprojects.big_project.entities.Task;
+import kz.xodbar.springprojects.big_project.services.CommentService;
 import kz.xodbar.springprojects.big_project.services.FolderService;
 import kz.xodbar.springprojects.big_project.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class TrelloTaskController {
 
     @Autowired
     private FolderService folderService;
+
+    @Autowired
+    private CommentService commentService;
 
     @RequestMapping(value = "/trello/folders/{folderId}/addTask", method = RequestMethod.POST)
     public ModelAndView addTaskToFolder(@PathVariable Long folderId,
@@ -42,6 +46,7 @@ public class TrelloTaskController {
     public ModelAndView getSpecificTask(@PathVariable Long folderId,
                                         @PathVariable Long taskId,
                                         ModelMap modelMap) {
+        modelMap.addAttribute("comments", commentService.getCommentsForTask(taskService.getTaskById(taskId)));
         modelMap.addAttribute("task", taskService.getTaskById(taskId));
         modelMap.addAttribute("folder", folderService.getFolderById(folderId));
 

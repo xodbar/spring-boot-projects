@@ -8,36 +8,41 @@
     <title>SERVICE PAGE</title>
 </head>
 <body>
-<header class="header">
-    <nav class="navbar navbar-expand-lg navbar-light bg-success">
-        <a th:href="@{/trello}" class="navbar-brand">trello.com</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarContent" aria-controls="navbarContent"
-                aria-label="Toggle navigation" aria-expanded="false">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a th:href="@{/trello}" class="nav-link">Folders</a>
-                </li>
-                <li class="nav-item">
-                    <a th:href="@{/trello/categories}" class="nav-link">Categories</a>
-                </li>
-            </ul>
-            <form th:action="@{/trello}" method="get">
-                <div class="input-group">
-                    <label for="folderName"></label>
-                    <input class="form-control" type="text" placeholder="Search folder by name"
-                           name="folderName" id="folderName" required>
-                    <button class="btn btn-light text-success">Search</button>
-                </div>
-            </form>
-        </div>
-    </nav>
+<header class="header bg-primary">
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <a th:href="@{/trello}" class="navbar-brand fw-bold">trello.com</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarContent" aria-controls="navbarContent"
+                    aria-label="Toggle navigation" aria-expanded="false">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a th:href="@{/trello}" class="nav-link">Folders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/trello/categories}" class="nav-link">Categories</a>
+                    </li>
+                </ul>
+                <form th:action="@{/trello/search}" method="get">
+                    <div class="input-group form-control">
+                        <label for="query"></label>
+                        <input class="me-1" style="outline: rgba(0,0,0,0); border: 0" type="text"
+                               placeholder="Search folder by name"
+                               name="query" id="query" required>
+                        <button class="bg-transparent border-0 text-primary ms-auto">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </nav>
+    </div>
 </header>
 
-<main class="min-vh-100" layout:fragment="content">
+<main class="min-vh-100 mt-3 mb-4" layout:fragment="content">
     <h1>Hello, World!</h1>
 </main>
 

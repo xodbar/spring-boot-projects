@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -16,6 +17,13 @@ public class TrelloHomeController {
     @RequestMapping(value = "/trello", method = {RequestMethod.GET, RequestMethod.POST})
     public ModelAndView getTrelloHomePage(ModelMap modelMap) {
         modelMap.addAttribute("folders", folderService.getAllFolders());
+        return new ModelAndView("./big_project/index", modelMap);
+    }
+
+    @RequestMapping(value = "/trello/search", method = RequestMethod.GET)
+    public ModelAndView findFolderByName(@RequestParam String query,
+                                         ModelMap modelMap) {
+        modelMap.addAttribute("folders", folderService.getFoldersByNameSearch(query));
         return new ModelAndView("./big_project/index", modelMap);
     }
 }

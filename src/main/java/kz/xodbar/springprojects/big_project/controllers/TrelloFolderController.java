@@ -2,6 +2,7 @@ package kz.xodbar.springprojects.big_project.controllers;
 
 import kz.xodbar.springprojects.big_project.entities.Folder;
 import kz.xodbar.springprojects.big_project.services.FolderService;
+import kz.xodbar.springprojects.big_project.services.TaskCategoryService;
 import kz.xodbar.springprojects.big_project.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,9 @@ public class TrelloFolderController {
 
     @Autowired
     private TaskService taskService;
+
+    @Autowired
+    private TaskCategoryService categoryService;
 
     @RequestMapping(value = "/trello/folders", method = RequestMethod.POST)
     public ModelAndView addNewFolder(@RequestParam(defaultValue = "Unnamed Folder") String folderName,
@@ -41,6 +45,7 @@ public class TrelloFolderController {
                                           ModelMap modelMap) {
         modelMap.addAttribute("folder", folderService.getFolderById(id));
         modelMap.addAttribute("folderTasks", taskService.getTasksByFolder(id));
+        modelMap.addAttribute("allCategories", categoryService.getAllCategories());
 
         return new ModelAndView("./big_project/folder", modelMap);
     }

@@ -1,6 +1,7 @@
 package kz.xodbar.springprojects.big_project.services.impl;
 
 import kz.xodbar.springprojects.big_project.entities.Comment;
+import kz.xodbar.springprojects.big_project.entities.Task;
 import kz.xodbar.springprojects.big_project.repositories.CommentRepository;
 import kz.xodbar.springprojects.big_project.services.CommentService;
 import kz.xodbar.springprojects.big_project.services.TaskService;
@@ -68,9 +69,9 @@ public class CommentServiceImplementation implements CommentService {
     }
 
     @Override
-    public List<Comment> getCommentsForTask(Long taskId) {
+    public List<Comment> getCommentsForTask(Task task) {
         try {
-            return commentRepository.findAllByCommentTask(taskId);
+            return commentRepository.findAllByCommentTaskOrderByCommentIdDesc(task);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

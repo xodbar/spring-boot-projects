@@ -5,8 +5,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface TaskCategoryRepository extends JpaRepository<TaskCategory, Long> {
     @Query
-    TaskCategory findByTaskCategoryName(String categoryName);
+    TaskCategory findByTaskCategoryNameLike(String categoryName);
+
+    @Query
+    List<TaskCategory> findAllByOrderByTaskCategoryNameAsc();
 }

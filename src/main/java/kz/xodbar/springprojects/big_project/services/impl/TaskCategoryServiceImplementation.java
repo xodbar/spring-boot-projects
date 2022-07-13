@@ -35,7 +35,7 @@ public class TaskCategoryServiceImplementation implements TaskCategoryService {
     @Override
     public List<TaskCategory> getAllCategories() {
         try {
-            return taskCategoryRepository.findAll();
+            return taskCategoryRepository.findAllByOrderByTaskCategoryNameAsc();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -63,7 +63,7 @@ public class TaskCategoryServiceImplementation implements TaskCategoryService {
     @Override
     public TaskCategory getCategoryByName(String categoryName) {
         try {
-            return taskCategoryRepository.findByTaskCategoryName(categoryName);
+            return taskCategoryRepository.findByTaskCategoryNameLike(categoryName);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
