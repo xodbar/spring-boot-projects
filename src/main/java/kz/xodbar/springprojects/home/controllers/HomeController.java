@@ -71,7 +71,7 @@ public class HomeController {
         ));
 
         lectures.add(new Lecture(
-                7, "ORM, Связки таблиц @ManyToOne", new ArrayList<>()
+                7, "ORM, Связки таблиц @ManyToOne + Lecture 8 @ManyToMany", new ArrayList<>()
         ));
 
         lectures.get(4).getTasks().add(new Task(

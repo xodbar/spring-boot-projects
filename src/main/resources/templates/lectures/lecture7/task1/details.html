@@ -10,7 +10,7 @@
 <div class="container" layout:fragment="content">
     <!--/*@thymesVar id="request" type="kz.xodbar.springprojects.lectures.lecture7.entities.ApplicationRequestUpdated"*/-->
     <th:block th:if="${request.handled == false}">
-        <h3 class="text-center text-danger">Unhandled Request</h3>
+        <h3 class="text-center text-danger">*** Unhandled Request ***</h3>
     </th:block>
     <form th:action="@{/lecture7/task1/{id}/update(id=${request.id})}" method="post">
         <div class="input-group mb-3">
@@ -40,14 +40,96 @@
             <button type="submit" class="btn btn-outline-primary w-100">Save Changes</button>
         </div>
     </form>
-    <div class="d-flex justify-content-between">
-        <form th:action="@{/lecture7/task1/{id}/handle(id=${request.id})}" class="col-8" method="post">
-            <button class="btn btn-success w-100">Mark As Handled</button>
-        </form>
-        <form th:action="@{/lecture7/task1/{id}/delete(id=${request.id})}" class="col-4" method="post">
+    <div class="mt-1 mb-2">
+        <th:block th:if="${!request.isHandled()}">
+            <button class="btn btn-success col-12 mb-2" type="button"
+                    data-bs-toggle="modal" data-bs-target="#handleRequestModal">
+                Mark As Handled
+            </button>
+        </th:block>
+        <th:block th:if="${request.isHandled()}">
+            <form th:action="@{/lecture7/task1/{id}/handle(id=${request.id})}" class="w-100 col-12" method="post">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Surname</th>
+                        <th>Department</th>
+                        <th>Assigned</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!--/*@thymesVar id="operators" type="java.util.List<kz.xodbar.springprojects.lectures.lecture7.entities.Operator>"*/-->
+                    <tr th:each="operator : ${operators}">
+                        <td th:text="${operator.getId()}"></td>
+                        <td th:text="${operator.getName()}"></td>
+                        <td th:text="${operator.getSurname()}"></td>
+                        <td th:text="${operator.getDepartment()}"></td>
+                        <td>
+                            <input type="checkbox" checked="checked" th:id="'oprchk' + ${operator.getId()}"
+                                   name="operators" th:value="${operator.getId()}"
+                                   th:disabled="${operators.size() <= 1}">
+                        </td>
+                    </tr>
+                    </tbody>
+                    <small class="mt-1 mb-2 text-secondary">Request should have at least one assigned operator!</small>
+                </table>
+                <button class="btn btn-success w-100 mt-2 mb-2" type="submit">Save Operators</button>
+            </form>
+        </th:block>
+        <form th:action="@{/lecture7/task1/{id}/delete(id=${request.id})}" class=" mt-2 col-12 w-100 mb-2" method="post">
             <button class="btn btn-danger w-100">Delete Request</button>
         </form>
     </div>
+
+    <!-- Modal -->
+    <th:block th:if="${!request.isHandled()}">
+        <div class="modal fade" id="handleRequestModal" tabindex="-1"
+             aria-labelledby="handleRequestModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="handleRequestModalLabel">Handle Request</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h6>Assign responsible operators:</h6>
+                        <form th:action="@{/lecture7/task1/{id}/handle(id=${request.id})}" class="w-100" method="post">
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Surname</th>
+                                    <th>Department</th>
+                                    <th>Assigned</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <!--/*@thymesVar id="operators" type="java.util.List<kz.xodbar.springprojects.lectures.lecture7.entities.Operator>"*/-->
+                                <tr th:each="operator : ${operators}">
+                                    <td th:text="${operator.getId()}"></td>
+                                    <td th:text="${operator.getName()}"></td>
+                                    <td th:text="${operator.getSurname()}"></td>
+                                    <td th:text="${operator.getDepartment()}"></td>
+                                    <td>
+                                        <input type="checkbox" th:id="'oprchk' + ${operator.getId()}"
+                                               name="operators" th:value="${operator.getId()}">
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <button class="btn btn-success w-100 mt-2 mb-2" type="submit">Handle Request</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary w-100" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </th:block>
 </div>
 </body>
 </html>

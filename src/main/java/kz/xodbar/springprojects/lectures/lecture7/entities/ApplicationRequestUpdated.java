@@ -4,8 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "requests_new")
@@ -32,5 +35,10 @@ public class ApplicationRequestUpdated {
     private boolean handled;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Course course;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<Operator> operators;
 }

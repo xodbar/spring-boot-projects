@@ -4,6 +4,7 @@ import kz.xodbar.springprojects.lectures.lecture7.entities.ApplicationRequestUpd
 import kz.xodbar.springprojects.lectures.lecture7.entities.Course;
 import kz.xodbar.springprojects.lectures.lecture7.services.ApplicationRequestServiceUpdated;
 import kz.xodbar.springprojects.lectures.lecture7.services.CourseService;
+import kz.xodbar.springprojects.lectures.lecture7.services.OperatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -22,6 +24,9 @@ public class ApplicationRequestControllerUpdated {
 
     @Autowired
     private CourseService courseService;
+
+    @Autowired
+    private OperatorService operatorService;
 
     @Autowired
     private List<Course> courses() {
@@ -69,7 +74,8 @@ public class ApplicationRequestControllerUpdated {
                     requestCommentary,
                     requestPhone,
                     false,
-                    courseService.getCourseById(requestCourse)));
+                    courseService.getCourseById(requestCourse),
+                    new ArrayList<>()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -81,6 +87,12 @@ public class ApplicationRequestControllerUpdated {
     public ModelAndView getRequestDetailsPage(@PathVariable Long id, ModelMap model) {
         model.addAttribute("request", requestService.getRequestById(id));
         model.addAttribute("courses", courses());
+
+        model.addAttribute("operators",
+                (requestService.getRequestById(id).isHandled())
+                        ? requestService.getRequestById(id).getOperators()
+                        : operatorService.getAllOperators());
+
         return new ModelAndView("./lectures/lecture7/task1/details", model);
     }
 
@@ -95,13 +107,15 @@ public class ApplicationRequestControllerUpdated {
                 requestCommentary,
                 requestPhone,
                 false,
-                courseService.getCourseById(requestCourse)));
+                courseService.getCourseById(requestCourse),
+                requestService.getRequestById(id).getOperators()));
         return "redirect:/lecture7/task1";
     }
 
     @RequestMapping(value = "/lecture7/task1/{id}/handle", method = RequestMethod.POST)
-    public String markRequestAsHandled(@PathVariable Long id) {
-        requestService.handleRequest(id);
+    public String markRequestAsHandled(@PathVariable Long id,
+                                       @RequestParam(value = "operators") Long[] operators) {
+        requestService.handleRequest(id, operators);
         return "redirect:/lecture7/task1";
     }
 

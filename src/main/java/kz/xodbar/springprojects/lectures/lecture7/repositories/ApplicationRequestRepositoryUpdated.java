@@ -1,6 +1,7 @@
 package kz.xodbar.springprojects.lectures.lecture7.repositories;
 
 import kz.xodbar.springprojects.lectures.lecture7.entities.ApplicationRequestUpdated;
+import kz.xodbar.springprojects.lectures.lecture7.entities.Operator;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

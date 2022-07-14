@@ -13,5 +13,5 @@ public interface ApplicationRequestServiceUpdated {
     List<ApplicationRequestUpdated> searchRequestByComment(String query);
     void updateRequest(ApplicationRequestUpdated request);
     void deleteRequest(Long id);
-    void handleRequest(Long id);
+    void handleRequest(Long id, Long[] operators);
 }

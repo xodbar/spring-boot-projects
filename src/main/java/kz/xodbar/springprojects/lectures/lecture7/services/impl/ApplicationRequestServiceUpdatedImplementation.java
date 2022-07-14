@@ -3,15 +3,20 @@ package kz.xodbar.springprojects.lectures.lecture7.services.impl;
 import kz.xodbar.springprojects.lectures.lecture7.entities.ApplicationRequestUpdated;
 import kz.xodbar.springprojects.lectures.lecture7.repositories.ApplicationRequestRepositoryUpdated;
 import kz.xodbar.springprojects.lectures.lecture7.services.ApplicationRequestServiceUpdated;
+import kz.xodbar.springprojects.lectures.lecture7.services.OperatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ApplicationRequestServiceUpdatedImplementation implements ApplicationRequestServiceUpdated {
     @Autowired
     private ApplicationRequestRepositoryUpdated repository;
+
+    @Autowired
+    private OperatorService operatorService;
 
     @Override
     public void addRequest(ApplicationRequestUpdated request) {
@@ -61,8 +66,16 @@ public class ApplicationRequestServiceUpdatedImplementation implements Applicati
     }
 
     @Override
-    public void handleRequest(Long id) {
+    public void handleRequest(Long id, Long[] operators) {
         try {
+            ApplicationRequestUpdated temp = getRequestById(id);
+            temp.setOperators(new ArrayList<>());
+
+            for (Long operatorId : operators)
+                temp.getOperators().add(operatorService.getOperatorById(operatorId));
+
+            updateRequest(temp);
+
             repository.handleRequestById(id);
         } catch (Exception e) {
             e.printStackTrace();
